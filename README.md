@@ -1,6 +1,6 @@
 # Content Scraper
 ## Program your scraper
-- [ ] Your scraper should visits the website http://shirts4mike.com and use http://shirts4mike.com/shirts.php as single entry point to scrape information for 8 tee-shirts from the site, without using any hard-coded urls like http://www.shirts4mike.com/shirt.php?id=101.
+Your scraper should visit the website http://shirts4mike.com and use http://shirts4mike.com/shirts.php as single entry point to scrape information for 8 tee-shirts from the site, without using any hard-coded urls like http://www.shirts4mike.com/shirt.php?id=101.
 ### Scraping and Saving Data:
 - [ ] The scraper should get the price, title, url and image url from the product page and save this information into a CSV file.
 - [ ] The information should be stored in an CSV file that is named for the date it was created, e.g. 2016-11-21.csv.
