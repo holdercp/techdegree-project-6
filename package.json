@@ -30,6 +30,7 @@
     "prettier-eslint": "^8.8.2"
   },
   "dependencies": {
+    "csv-writer": "^1.0.0",
     "x-ray": "^2.3.3"
   }
 }
