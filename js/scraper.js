@@ -2,6 +2,13 @@ const Xray = require('x-ray');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const utility = require('./utilities');
 
+// Flattens shirt obj and adds a datetime string prop
+const massageShirtData = (shirtObj) => {
+  const flatShirt = utility.flattenObj(shirtObj);
+  flatShirt.time = utility.formatDateTime(new Date());
+  return flatShirt;
+};
+
 const x = Xray({
   filters: {
     trimTitle(value) {
@@ -13,15 +20,21 @@ const x = Xray({
 x('http://shirts4mike.com/shirts.php', '.products li', [
   {
     url: 'a@href',
-    title: x('a@href', '.shirt-details h1 | trimTitle'),
-    price: x('a@href', '.shirt-details .price'),
-    imageUrl: x('a@href', '.shirt-picture img@src'),
+    shirtDetails: x('a@href', {
+      title: '.shirt-details h1 | trimTitle',
+      price: '.shirt-details .price',
+      imageUrl: '.shirt-picture img@src',
+    }),
   },
-])((err, shirtsArr) => {
+])((err, res) => {
   if (err) {
     console.log(err);
     return;
   }
+
+  // Flatten shirt objs and add timestamp prop to each shirt in arr
+  const shirtData = res.map(massageShirtData);
+
   const csvWriter = createCsvWriter({
     path: '../data/file.csv',
     header: [
@@ -33,10 +46,8 @@ x('http://shirts4mike.com/shirts.php', '.products li', [
     ],
   });
 
-  const records = shirtsArr;
-
   csvWriter
-    .writeRecords(records) // returns a promise
+    .writeRecords(shirtData) // returns a promise
     .then(() => {
       console.log('...Done');
     });
