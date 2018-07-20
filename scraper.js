@@ -1,4 +1,5 @@
 const Xray = require('x-ray');
+const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 
 const x = Xray({
   filters: {
@@ -18,7 +19,24 @@ x('http://shirts4mike.com/shirts.php', '.products li', [
 ])((err, shirtsArr) => {
   if (err) {
     console.log(err);
-  } else {
-    console.log(shirtsArr);
+    return;
   }
+  const csvWriter = createCsvWriter({
+    path: 'data/file.csv',
+    header: [
+      { id: 'title', title: 'Title' },
+      { id: 'price', title: 'Price' },
+      { id: 'imageUrl', title: 'ImageURL' },
+      { id: 'url', title: 'URL' },
+      { id: 'time', title: 'Time' },
+    ],
+  });
+
+  const records = shirtsArr;
+
+  csvWriter
+    .writeRecords(records) // returns a promise
+    .then(() => {
+      console.log('...Done');
+    });
 });
