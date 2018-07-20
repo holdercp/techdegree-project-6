@@ -1,6 +1,6 @@
 const Xray = require('x-ray');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
-const dateHelper = require('./date-helpers');
+const utility = require('./utilities');
 
 const x = Xray({
   filters: {
