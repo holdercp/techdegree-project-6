@@ -1,9 +1,12 @@
 const Xray = require('x-ray');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const fs = require('fs');
+const path = require('path');
 const utility = require('./utilities');
 
-const dirPath = '../data';
+// Allows the .csv file to be written at [projectRoot]/data
+// regardless of where the script is called from
+const dirPath = path.join(__dirname, '..', 'data');
 
 // Flattens shirt obj and adds a datetime string prop
 const massageShirtData = (shirtObj) => {
