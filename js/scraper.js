@@ -14,6 +14,7 @@ const massageShirtData = (shirtObj) => {
 
 const x = Xray({
   filters: {
+    // The price is returned with the title, so we need to trim that out
     trimTitle(value) {
       return typeof value === 'string' ? value.substring(value.indexOf(' ') + 1) : value;
     },
@@ -31,7 +32,8 @@ x('http://shirts4mike.com/shirts.php', '.products li', [
   },
 ])((err, res) => {
   if (err) {
-    console.log(err);
+    const msg = err.code === 'ENOTFOUND' ? "we can't connect to shirts4mike.com" : 'something went wrong';
+    console.error(`Whoops! Looks like ${msg}. Try Again later`);
     return;
   }
 

@@ -11,8 +11,8 @@ Your scraper should visit the website http://shirts4mike.com and use http://shir
 - [x] Assume that the the column headers in the CSV need to be in a certain order to be correctly entered into a database. They should be in this order: Title, Price, ImageURL, URL, and Time
 - [x] The CSV file should be saved inside the ‘data’ folder. If the 'data' folder does not exist, create it.
 - [x] If your program is run twice, it should overwrite the data in the CSV file with the updated information.
-- [ ] If http://shirts4mike.com is down, an error message describing the issue should appear in the console.
-- [ ] The error should be human-friendly, such as “There’s been a 404 error. Cannot connect to http://shirts4mike.com.”
+- [x] If http://shirts4mike.com is down, an error message describing the issue should appear in the console.
+- [x] The error should be human-friendly, such as “There’s been a 404 error. Cannot connect to http://shirts4mike.com.”
 
 ## Extra Credit
 
