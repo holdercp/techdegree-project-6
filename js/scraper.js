@@ -36,7 +36,7 @@ x('http://shirts4mike.com/shirts.php', '.products li', [
   const shirtData = res.map(massageShirtData);
 
   const csvWriter = createCsvWriter({
-    path: '../data/file.csv',
+    path: `../data/${utility.formatDate(new Date())}.csv`,
     header: [
       { id: 'title', title: 'Title' },
       { id: 'price', title: 'Price' },
