@@ -3,6 +3,8 @@ const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const fs = require('fs');
 const utility = require('./utilities');
 
+const dirPath = '../data';
+
 // Flattens shirt obj and adds a datetime string prop
 const massageShirtData = (shirtObj) => {
   const flatShirt = utility.flattenObj(shirtObj);
@@ -33,13 +35,19 @@ x('http://shirts4mike.com/shirts.php', '.products li', [
     return;
   }
 
-  if (!fs.existsSync('../data')) fs.mkdirSync('../data');
+  // If the data dir already exists, clear it, otherwise create it
+  if (fs.existsSync(dirPath)) {
+    const prevFiles = fs.readdirSync(dirPath);
+    prevFiles.forEach(file => fs.unlinkSync(`${dirPath}/${file}`));
+  } else {
+    fs.mkdirSync(dirPath);
+  }
 
   // Flatten shirt objs and add timestamp prop to each shirt in arr
   const shirtData = res.map(massageShirtData);
 
   const csvWriter = createCsvWriter({
-    path: `../data/${utility.formatDate(new Date())}.csv`,
+    path: `${dirPath}/${utility.formatDate(new Date())}.csv`,
     header: [
       { id: 'title', title: 'Title' },
       { id: 'price', title: 'Price' },
