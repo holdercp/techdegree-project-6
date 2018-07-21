@@ -59,9 +59,17 @@ x('http://shirts4mike.com/shirts.php', '.products li', [
     ],
   });
 
-  csvWriter
-    .writeRecords(shirtData) // returns a promise
-    .then(() => {
-      console.log('...Done');
-    });
+  try {
+    csvWriter
+      .writeRecords(shirtData) // returns a promise
+      .then(() => {
+        console.log('...Done');
+
+        /* eslint no-underscore-dangle: ["error", { "allow": ["_path"] }] */
+        const filePath = fs.realpathSync(csvWriter._path);
+        console.log(`The scraped data is in ${filePath}`);
+      });
+  } catch (error) {
+    console.error('An error occurred when writing the file.');
+  }
 });
