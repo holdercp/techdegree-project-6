@@ -2,9 +2,10 @@
   "name": "content-scraper",
   "version": "1.0.0",
   "description": "Node.js command line application that goes to an ecommerce site to get the latest prices and save them to a spreadsheet (CSV format)",
-  "main": "index.js",
+  "main": "js/scraper.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node js/scraper.js"
   },
   "repository": {
     "type": "git",
@@ -22,9 +23,6 @@
     "url": "https://github.com/holdercp/techdegree-project-6/issues"
   },
   "homepage": "https://github.com/holdercp/techdegree-project-6#readme",
-  "scripts": {
-    "start": "node js/scraper.js"
-  },
   "devDependencies": {
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^13.0.0",
