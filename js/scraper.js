@@ -1,5 +1,6 @@
 const Xray = require('x-ray');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+const fs = require('fs');
 const utility = require('./utilities');
 
 // Flattens shirt obj and adds a datetime string prop
@@ -31,6 +32,8 @@ x('http://shirts4mike.com/shirts.php', '.products li', [
     console.log(err);
     return;
   }
+
+  if (!fs.existsSync('../data')) fs.mkdirSync('../data');
 
   // Flatten shirt objs and add timestamp prop to each shirt in arr
   const shirtData = res.map(massageShirtData);
