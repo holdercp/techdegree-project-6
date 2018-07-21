@@ -17,4 +17,4 @@ Your scraper should visit the website http://shirts4mike.com and use http://shir
 ## Extra Credit
 
 - [x] Edit your package.json file so that your program runs when the npm start command is run.
-- [ ] When an error occurs, log it to a file named scraper-error.log . It should append to the bottom of the file with a time stamp and error
+- [x] When an error occurs, log it to a file named scraper-error.log . It should append to the bottom of the file with a time stamp and error
