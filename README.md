@@ -1,6 +1,15 @@
 # Content Scraper
 
-## Program your scraper
+This command line program uses Node.js to scrape product data from shirts4mike.com. It will write this data to a .csv file in a `data` folder in the project root. Each time the program is run the previous file will be overwritten.
+
+You will need npm and Node.js installed on your machine to run this program.
+
+## How to Use
+
+- Run `npm install` to download dependencies
+- Run `npm start` to run the program
+
+## Project Requirements
 
 Your scraper should visit the website http://shirts4mike.com and use http://shirts4mike.com/shirts.php as single entry point to scrape information for 8 tee-shirts from the site, without using any hard-coded urls like http://www.shirts4mike.com/shirt.php?id=101.
 
@@ -14,7 +23,7 @@ Your scraper should visit the website http://shirts4mike.com and use http://shir
 - [x] If http://shirts4mike.com is down, an error message describing the issue should appear in the console.
 - [x] The error should be human-friendly, such as “There’s been a 404 error. Cannot connect to http://shirts4mike.com.”
 
-## Extra Credit
+### Extra Credit
 
 - [x] Edit your package.json file so that your program runs when the npm start command is run.
 - [x] When an error occurs, log it to a file named scraper-error.log . It should append to the bottom of the file with a time stamp and error
