@@ -6,13 +6,26 @@ const utility = require('./utilities');
 
 // Allows the .csv file to be written at [projectRoot]/data
 // regardless of where the script is called from
-const dirPath = path.join(__dirname, '..', 'data');
+const rootPath = path.join(__dirname, '..');
+const dataPath = path.join(rootPath, 'data');
 
 // Flattens shirt obj and adds a datetime string prop
 const massageShirtData = (shirtObj) => {
   const flatShirt = utility.flattenObj(shirtObj);
   flatShirt.time = utility.formatDateTime(new Date());
   return flatShirt;
+};
+
+// Logs a friendly message to the console and writes to a log file
+const handleError = (e) => {
+  const date = new Date();
+  const log = `[${date.toString()}] ${e}\n`;
+  fs.appendFile(`${rootPath}/scraper-error.log`, log, () => {
+    const msg = e.code && e.code === 'ENOTFOUND'
+      ? "we can't connect to shirts4mike.com"
+      : 'something went wrong';
+    console.error(`Whoops! Looks like ${msg}. Check scraper-error.log for more details.`);
+  });
 };
 
 const x = Xray({
@@ -35,24 +48,23 @@ x('http://shirts4mike.com/shirts.php', '.products li', [
   },
 ])((err, res) => {
   if (err) {
-    const msg = err.code === 'ENOTFOUND' ? "we can't connect to shirts4mike.com" : 'something went wrong';
-    console.error(`Whoops! Looks like ${msg}. Try Again later`);
+    handleError(err);
     return;
   }
 
   // If the data dir already exists, clear it, otherwise create it
-  if (fs.existsSync(dirPath)) {
-    const prevFiles = fs.readdirSync(dirPath);
-    prevFiles.forEach(file => fs.unlinkSync(`${dirPath}/${file}`));
+  if (fs.existsSync(dataPath)) {
+    const prevFiles = fs.readdirSync(dataPath);
+    prevFiles.forEach(file => fs.unlinkSync(`${dataPath}/${file}`));
   } else {
-    fs.mkdirSync(dirPath);
+    fs.mkdirSync(dataPath);
   }
 
   // Flatten shirt objs and add timestamp prop to each shirt in arr
   const shirtData = res.map(massageShirtData);
 
   const csvWriter = createCsvWriter({
-    path: `${dirPath}/${utility.formatDate(new Date())}.csv`,
+    path: `${dataPath}/${utility.formatDate(new Date())}.csv`,
     header: [
       { id: 'title', title: 'Title' },
       { id: 'price', title: 'Price' },
@@ -62,17 +74,13 @@ x('http://shirts4mike.com/shirts.php', '.products li', [
     ],
   });
 
-  try {
-    csvWriter
-      .writeRecords(shirtData) // returns a promise
-      .then(() => {
-        console.log('...Done');
+  csvWriter
+    .writeRecords(shirtData) // returns a promise
+    .then(() => {
+      console.log('...Done');
 
-        /* eslint no-underscore-dangle: ["error", { "allow": ["_path"] }] */
-        const filePath = fs.realpathSync(csvWriter._path);
-        console.log(`The scraped data is in ${filePath}`);
-      });
-  } catch (error) {
-    console.error('An error occurred when writing the file.');
-  }
+      /* eslint no-underscore-dangle: ["error", { "allow": ["_path"] }] */
+      const filePath = fs.realpathSync(csvWriter._path);
+      console.log(`The scraped data is in ${filePath}`);
+    });
 });
