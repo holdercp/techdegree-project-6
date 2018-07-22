@@ -28,6 +28,16 @@ const handleError = (e) => {
   });
 };
 
+// If the dir already exists, clear it, otherwise create it
+const writeDir = (dirPath) => {
+  if (fs.existsSync(dirPath)) {
+    const prevFiles = fs.readdirSync(dirPath);
+    prevFiles.forEach(file => fs.unlinkSync(`${dirPath}/${file}`));
+  } else {
+    fs.mkdirSync(dirPath);
+  }
+};
+
 const x = Xray({
   filters: {
     // The price is returned with the title, so we need to trim that out
@@ -52,16 +62,9 @@ x('http://shirts4mike.com/shirts.php', '.products li', [
     return;
   }
 
-  // If the data dir already exists, clear it, otherwise create it
-  if (fs.existsSync(dataPath)) {
-    const prevFiles = fs.readdirSync(dataPath);
-    prevFiles.forEach(file => fs.unlinkSync(`${dataPath}/${file}`));
-  } else {
-    fs.mkdirSync(dataPath);
-  }
-
-  // Flatten shirt objs and add timestamp prop to each shirt in arr
   const shirtData = res.map(massageShirtData);
+
+  writeDir(dataPath);
 
   const csvWriter = createCsvWriter({
     path: `${dataPath}/${utility.formatDate(new Date())}.csv`,
