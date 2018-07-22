@@ -62,6 +62,11 @@ x('http://shirts4mike.com/shirts.php', '.products li', [
     return;
   }
 
+  if (res.length === 0) {
+    handleError('Error: There was no data returned from the request.');
+    return;
+  }
+
   const shirtData = res.map(massageShirtData);
 
   writeDir(dataPath);
